@@ -1,7 +1,7 @@
 import cx from "classnames";
 import { useState } from "react";
-import { FeedbackGroup } from "../hooks";
 import { DataTable } from "./DataTable";
+import {FeedbackGroup} from "../../../shared/types.ts";
 
 const importanceValue = {
   High: 2,
@@ -28,11 +28,13 @@ export function GroupsDataTable({ data }: { data: FeedbackGroup[] }) {
             })}
           >
             <div className="mb-2 text-base font-semibold">{group.name}</div>
+            <div className="mb-2 text-base font-normal">{group.description}</div>
           </div>
         ))}
       </div>
       <div className="bg-dusty-white w-full flex-1 p-4">
         <DataTable
+          key={data[selectedGroupIndex]?.name}
           fullWidth
           data={(data[selectedGroupIndex]?.feedback ?? [])
             .sort(
@@ -55,7 +57,7 @@ export function GroupsDataTable({ data }: { data: FeedbackGroup[] }) {
               headerName: "Description",
               cellRenderer: (row) => (
                 <div className="py-3">
-                  <div className="font-semibold">{row.name}</div>
+                  <div className="font-semibold">{row.description}</div>
                 </div>
               ),
             },

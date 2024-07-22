@@ -20,4 +20,21 @@ export interface FilterItem {type: FilterType, name: string, icon: string, opera
     input: {type: string, options?: Option[], values?: string[]}}
 export type FilterItemsMap = Record<string, FilterItem>;
 
+export type Feedback = {
+    id: number;
+    name: string;
+    description: string;
+    importance: "High" | "Medium" | "Low";
+    type: "Sales" | "Customer" | "Research";
+    customer: "Loom" | "Ramp" | "Brex" | "Vanta" | "Notion" | "Linear" | "OpenAI";
+    date: string;
+};
+
+export type FeedbackData = Feedback[];
+
+export type FeedbackGroup = {
+    name: string;
+    description: string;
+    feedback: Feedback[];
+};
 

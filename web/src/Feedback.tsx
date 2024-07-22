@@ -4,15 +4,15 @@ import {FilterItemsMap} from "./components/FilterDropdown.tsx";
 import { validateFilter } from '../../shared/utils';
 
 type Props = {
-  filters: FilterItemsMap;
+  filters?: FilterItemsMap;
 };
 
 export function Feedback({filters}: Props) {
   const validatedFilters = Object.fromEntries(
       Object.entries(filters).filter(([key, item]) => validateFilter(item)))
 
-
-  const { data, error, isLoading } = useFeedbackQuery({ filters: validatedFilters });
+  const { data, error, isLoading } =
+      useFeedbackQuery({ filters: validatedFilters });
 
   if (isLoading) {
     return <div>Loading...</div>;

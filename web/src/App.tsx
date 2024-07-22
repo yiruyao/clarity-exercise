@@ -42,7 +42,7 @@ function App() {
         {selectedTab === "feedback" ? (
           <Feedback filters={filterItems} />
         ) : (
-          <Groups filters={{filters: filterItems}} />
+          <Groups filters={filterItems} />
         )}
       </div>
     </div>

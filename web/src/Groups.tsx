@@ -1,19 +1,28 @@
 import { GroupsDataTable } from "./components/GroupsDataTable";
 import { useGroupsQuery } from "./hooks";
+import {validateFilter} from "../../shared/utils.ts";
+import {FilterItemsMap} from "./components/FilterDropdown.tsx";
 
 type Props = {
-  filters?: unknown;
+  filters?: FilterItemsMap;
 };
 
 export function Groups({ filters }: Props) {
-  const dataReq = useGroupsQuery({
+  const validatedFilters = Object.fromEntries(
+      Object.entries(filters).filter(([key, item]) => item !== undefined && validateFilter(item)))
+
+  const {data, error, isLoading, isLoadingError} = useGroupsQuery({
     _: "Update this object to pass data to the /groups endpoint.",
-    filters,
+    validatedFilters,
   });
 
-  if (dataReq.isLoading || !dataReq.data) {
+  if (isLoading || !data) {
     return <div>Loading...</div>;
   }
 
-  return <GroupsDataTable data={dataReq.data.data} />;
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  return <GroupsDataTable data={data.data} />;
 }
