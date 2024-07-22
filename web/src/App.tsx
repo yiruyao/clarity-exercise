@@ -1,7 +1,9 @@
-import { useState } from "react";
+import {useCallback, useState} from "react";
 import { NavTabs, TabConfig } from "./components/NavTabs";
 import { Feedback } from "./Feedback";
 import { Groups } from "./Groups";
+import { FilterBar } from "./components/FilterBar";
+import { FilterItemsMap } from '../../shared/types';
 
 export const TabsConfig: TabConfig = {
   feedback: {
@@ -16,6 +18,11 @@ export const TabsConfig: TabConfig = {
 
 function App() {
   const [selectedTab, setSelectedTab] = useState("feedback");
+  const [filterItems, setFilterItems] = useState<FilterItemsMap>({});
+
+  const updateFilterItems = useCallback((newFilterItems:FilterItemsMap) => {
+    setFilterItems(newFilterItems);
+  }, []);
 
   return (
     <div className="w-screen h-screen flex items-center justify-center">
@@ -29,12 +36,13 @@ function App() {
           selectedTab={selectedTab}
         />
         {/**
-         * TODO(part-1): Add filter options
+         * TODO(part-1): Add filtr options
          */}
+        <FilterBar filterItems={filterItems} updateFilterItems={updateFilterItems}/>
         {selectedTab === "feedback" ? (
-          <Feedback filters={{}} />
+          <Feedback filters={filterItems} />
         ) : (
-          <Groups filters={{}} />
+          <Groups filters={{filters: filterItems}} />
         )}
       </div>
     </div>

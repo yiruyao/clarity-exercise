@@ -18,6 +18,7 @@ export type FeedbackGroup = {
 };
 
 export function useFeedbackQuery(query: unknown) {
+  const queryKey = ["query-data", query]; // Construct the query key
   return useQuery<{ data: FeedbackData }>({
     queryFn: async () => {
       const res = await fetch("http://localhost:5001/query", {
@@ -28,11 +29,16 @@ export function useFeedbackQuery(query: unknown) {
         method: "POST",
       });
 
+      if (!res.ok) {
+        throw new Error('Network response failed');
+      }
       return res.json();
     },
     // The query key is used to cache responses and should represent
     // the parameters of the query.
-    queryKey: ["query-data"],
+    queryKey: queryKey,
+    refetchOnWindowFocus: false, // Disable refetch on window focus to isolate the issue
+    retry: 1,
   });
 }
 

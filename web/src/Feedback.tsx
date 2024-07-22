@@ -1,19 +1,29 @@
 import { FeedbackDataTable } from "./components/FeedbackDataTable";
 import { useFeedbackQuery } from "./hooks";
+import {FilterItemsMap} from "./components/FilterDropdown.tsx";
+import { validateFilter } from '../../shared/utils';
 
 type Props = {
-  filters?: unknown;
+  filters: FilterItemsMap;
 };
 
-export function Feedback({ filters }: Props) {
-  const dataReq = useFeedbackQuery({
-    _: "Update this object to pass data to the /query endpoint.",
-    filters,
-  });
+export function Feedback({filters}: Props) {
+  const validatedFilters = Object.fromEntries(
+      Object.entries(filters).filter(([key, item]) => validateFilter(item)))
 
-  if (dataReq.isLoading) {
+
+  const { data, error, isLoading } = useFeedbackQuery({ filters: validatedFilters });
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  return <FeedbackDataTable data={dataReq.data!.data} />;
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!data) {
+    return <div>No data available</div>;
+  }
+  return <FeedbackDataTable data={data.data} />;
 }

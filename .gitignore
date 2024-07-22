@@ -22,3 +22,7 @@ dist_vite/
 
 # Ignore turbo
 .turbo
+
+# Ignore IntelliJ IDEA project files
+.idea/
+

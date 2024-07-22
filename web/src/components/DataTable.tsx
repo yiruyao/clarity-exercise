@@ -67,7 +67,8 @@ export function DataTable<RowType>({
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="bg-white sticky border-b  px-6 text-left font-semibold hover:cursor-default"
+                  // todo: make the header sticky
+                  className="bg-white border-b px-6 text-left font-semibold hover:cursor-default"
                   style={{ height: 64, top: 0 }}
                   onClick={header.column.getToggleSortingHandler()}
                   title={
